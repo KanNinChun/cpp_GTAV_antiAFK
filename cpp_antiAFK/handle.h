@@ -13,9 +13,8 @@ bool checkHandle()  // run at first
 {
     if (handle == INVALID_HANDLE_VALUE)
     {
-        std::cout << target << " " << "not found!" << std::endl;
-        std::cout << "auto exit in 1.5 second!" << std::endl;
-        Sleep(1500);
+       MessageBoxA(NULL," Target not found! Exit when click ok", "Error Message", MB_ICONERROR | MB_OK);
+       exit(EXIT_FAILURE);
         return false;
     }
     else
@@ -48,6 +47,8 @@ void start()
     getSleepTime();
     while (true && isIconic() == false)
     {
+        SetFocus(GetConsoleWindow());
+        SetActiveWindow(GetConsoleWindow());
         if (GetKeyState(VK_NUMPAD1))
         {
             system("cls");
@@ -56,6 +57,12 @@ void start()
             pressD();
             sleep_override(seconds);
         }
-
+        else
+        {
+            system("cls");
+            std::cout << currentDateTime() << " : Stoped" << std::endl;
+            sleep_override(1);
+        }
+        Sleep(1); // optimize CPU usage
     }
 }
