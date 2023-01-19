@@ -3,41 +3,56 @@
 #include "presskey.h"
 #include "miscellaneous.h"
 
-std::string name = "Grand Theft Auto V";
-std::string filetype = ".exe";
-std::string combain = name + filetype;
-LPCSTR target = combain.c_str();
-HWND handle = FindWindowA(NULL, target);
+char buff[100];
+const std::string  process    = "Grand Theft Auto V.exe";
+
+HWND handle = FindWindowA(NULL, (LPCSTR)process.c_str());
 
 bool checkHandle()  // run at first
 {
-    if (handle == INVALID_HANDLE_VALUE)
+    if (!handle)
     {
-       MessageBoxA(NULL," Target not found! Exit when click ok", "Error Message", MB_ICONERROR | MB_OK);
+       sprintf_s(buff,  " %s not found! Exit when click ok", process.c_str());
+       MessageBoxA(NULL, buff , "Error Message", MB_ICONERROR | MB_OK);
        exit(EXIT_FAILURE);
-        return false;
+       return false;
     }
     else
     {
-        std::cout << target << " " << "found!" << std::endl;
+        std::cout << process << " " << "found!" << std::endl;
         Sleep(700);
         system("cls");
         return true;
     }
 }
 
-bool isIconic() // run at second
+
+//bool isIconic() // run at second
+//{
+//    if (IsIconic(handle) != 0)
+//    {
+//        system("cls");
+//        std::cout << target << " " << "if Window minimized Bot wouldn't work" << std::endl;
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+
+bool isForeground() // run at third
 {
-    if (IsIconic(handle) != 0)
-    {
-        system("cls");
-        std::cout << target << " " << "if Window minimized Bot wouldn't work" << std::endl;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+	if (GetForegroundWindow() != handle)
+	{
+		system("cls");
+		std::cout << process << " " << "if Window not in foreground Bot wouldn't work" << std::endl;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void start()
@@ -45,7 +60,7 @@ void start()
     console_functions();
     checkHandle();
     getSleepTime();
-    while (true && isIconic() == false)
+    while (true && isForeground() == false)
     {
         SetFocus(GetConsoleWindow());
         SetActiveWindow(GetConsoleWindow());
