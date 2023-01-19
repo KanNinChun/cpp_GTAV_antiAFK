@@ -4,7 +4,7 @@
 #include "miscellaneous.h"
 
 char buff[100];
-const std::string  process    = "Grand Theft Auto V.exe";
+const std::string process = "Grand Theft Auto V";
 
 HWND handle = FindWindowA(NULL, (LPCSTR)process.c_str());
 
